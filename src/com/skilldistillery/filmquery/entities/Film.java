@@ -17,11 +17,12 @@ public class Film {
 	private double replacementCost;
 	private String rating;
 	private String specialFeatures;
-//	private List<Actor> actorsInFilm;
+	private List<Actor> actorsInFilm;
+	private String filmLanguage;
 
 	public Film() {}
 	public Film(int id, String title, String description, Integer releaseYear, int languageId, String rentalDuration,
-			double rentalRate, String length, double replacementCost, String rating, String specialFeatures) {
+			double rentalRate, String length, double replacementCost, String rating, String specialFeatures, List<Actor> actorsInFilm, String filmLanguage) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
@@ -33,7 +34,8 @@ public class Film {
 		this.replacementCost = replacementCost;
 		this.rating = rating;
 		this.specialFeatures = specialFeatures;
-//		this.actorsInFilm = actorsInFilm;
+		this.actorsInFilm = actorsInFilm;
+		this.filmLanguage = filmLanguage;
 	}
 
 	public int getId() {
@@ -80,9 +82,13 @@ public class Film {
 		return specialFeatures;
 	}
 
-//	public List<Actor> getActorsInFilm() {
-//		return actorsInFilm;
-//	}
+	public List<Actor> getActorsInFilm() {
+		return actorsInFilm;
+	}
+
+	public String getFilmLanguage() {
+		return filmLanguage;
+	}
 
 	public void setId(int id) {
 		this.id = id;
@@ -128,14 +134,20 @@ public class Film {
 		this.specialFeatures = specialFeatures;
 	}
 
-//	public void setActorsInFilm(List<Actor> actorsInFilm) {
-//		this.actorsInFilm = actorsInFilm;
-//	}
+	public void setActorsInFilm(List<Actor> actorsInFilm) {
+		this.actorsInFilm = actorsInFilm;
+	}
+
+	public void setFilmLanguage(String filmLanguage) {
+		this.filmLanguage = filmLanguage;
+	}
+	
 	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((actorsInFilm == null) ? 0 : actorsInFilm.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + id;
 		result = prime * result + languageId;
@@ -161,6 +173,11 @@ public class Film {
 		if (getClass() != obj.getClass())
 			return false;
 		Film other = (Film) obj;
+		if (actorsInFilm == null) {
+			if (other.actorsInFilm != null)
+				return false;
+		} else if (!actorsInFilm.equals(other.actorsInFilm))
+			return false;
 		if (description == null) {
 			if (other.description != null)
 				return false;
@@ -231,11 +248,10 @@ public class Film {
 		builder.append(rating);
 		builder.append(", specialFeatures=");
 		builder.append(specialFeatures);
+		builder.append(", actorsInFilm=");
+		builder.append(actorsInFilm);
 		builder.append("]");
 		return builder.toString();
 	}
-
-
-	
 	
 }
