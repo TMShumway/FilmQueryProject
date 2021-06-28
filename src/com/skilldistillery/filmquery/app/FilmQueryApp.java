@@ -37,11 +37,23 @@ public class FilmQueryApp {
 	}
 
 	private void startUserInterface(Scanner kb) throws SQLException {
-		displayMenu();
+		boolean keepGoing = true;
 		
-		int userInt = kb.nextInt();
+		do {
+			displayMenu();
+			int userInt = validateIntInput(kb, 3);
+			if(userInt == 3) {
+				displayGoodbye();
+				break;
+			}
+			
+			userMenuSelection(userInt, kb);
+		} while (keepGoing);
+	}
+
+	private void displayGoodbye() {
+		System.out.println("------------------------------ Farewell! ------------------------------");
 		
-		userMenuSelection(userInt, kb);
 	}
 
 	private void userMenuSelection(int userInt, Scanner kb) throws SQLException {
@@ -54,7 +66,7 @@ public class FilmQueryApp {
 				menuSelectionTwo(kb);
 				break;
 			default:
-				System.out.println("Invalid Selction. Please try again.");
+				System.out.println("Unaccounted selection. Try again.");
 		}
 		
 	}
@@ -70,14 +82,8 @@ public class FilmQueryApp {
 		                       searchKeyword + " found.");
 		} else {
 			System.out.println("Search keyword matched to film(s).");
-			for (Film film : filmsByKeyword) {
-				System.out.println("\nFilm ID " + film.getId() + ": " + film.getTitle() +
-				           " " + film.getReleaseYear() + " " + film.getRating() +
-				           " " + film.getDescription() + " " + film.getFilmLanguage() +
-				           " ");
-				(film.getActorsInFilm()).forEach((a) -> System.out.println(a.getFirstName() + 
-						                                " " + a.getLastName() + " "));
-			}
+			System.out.println("=======================================================================");
+			filmsByKeyword.forEach(film -> printFilm(film, film.getId()));
 		}
 	}
 
@@ -89,22 +95,57 @@ public class FilmQueryApp {
 		if(film == null) {
 			System.out.println("No film with supplied Film ID: " + filmID + " found.");
 		} else {
-			System.out.println("Film ID located.");
-			System.out.println("\nFilm ID " + filmID + ": " + film.getTitle() +
-					           " " + film.getReleaseYear() + " " + film.getRating() +
-					           " " + film.getDescription() + " " + film.getFilmLanguage() +
-					           " ");
-			(film.getActorsInFilm()).forEach((a) -> System.out.println(a.getFirstName() + 
-                    " " + a.getLastName() + " "));
-			
+			System.out.println("Film ID located. Displaying results:");
+			System.out.println("=======================================================================");
+			printFilm(film, filmID);
 		}
 	}
 
+	private void printFilm(Film film, int filmID) {
+			System.out.println("\nFilm ID: " + filmID);
+			System.out.println("Film Title: " + film.getTitle());
+			System.out.println("Film Release Year: " + film.getReleaseYear());
+			System.out.println("Film Rating: " + film.getRating());
+			System.out.println("Film: Description: " + film.getDescription()); 
+			System.out.println("Film Language: " + film.getFilmLanguage());
+			System.out.print("Actors in Film:");
+			(film.getActorsInFilm()).forEach((a) -> System.out.print(" " + a.getFirstName() + 
+             " " + a.getLastName() + " - "));
+			System.out.println("\n-----------------------------------------------------------------------");
+	}
+	
 	private void displayMenu() {
-		System.out.println("------------------------------ Welcome! ------------------------------");
+		System.out.println("--------------------------------- MENU --------------------------------");
 		System.out.println("\n\t1) Look up Film by Film ID");
 		System.out.println("\t2) Look up Film by a search keyword");
+		System.out.println("\t3) Quit Program");
 		System.out.print("\nEnter your choice as a number only: ");
 	}
 
+	private int validateIntInput(Scanner kb, int menuUpperLimit) {
+		boolean isInt = false;
+		int number = 0;
+
+		do {
+						
+			if(kb.hasNextInt()) {
+				number = kb.nextInt();
+				if (number < 1 || number > menuUpperLimit){
+					System.out.println("Input out of range. 1 - " + menuUpperLimit + " only.");
+					kb.next();
+					System.out.print("Enter your choice as a number only: ");
+					continue;
+				}
+				isInt = true;
+				System.out.println();
+			} else {
+				System.out.println("Invalid input. Numerical input only.");
+				kb.next();
+				System.out.print("Enter your choice as a number only: ");
+			}
+		} while (!isInt);
+
+		return number;
+	}
+	
 }

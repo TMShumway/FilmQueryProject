@@ -17,6 +17,10 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	private static final String URL = "jdbc:mysql://localhost:3306/sdvid?useSSL=false";
 	private String user = "student";
 	private String pass = "student";
+//	private Connection conn;
+//	private String sqlQuery;
+//	private PreparedStatement stmt;
+//	private ResultSet rs;
 
 	static {
 		try {
@@ -29,7 +33,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	@Override
 	public Film findFilmById(int filmId) throws SQLException {
 		Film film = null;
-//		System.out.println("Find film by ID started...");
 
 		Connection conn = DriverManager.getConnection(URL, user, pass);
 
@@ -38,7 +41,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		stmt.setInt(1, filmId);
 		ResultSet rs = stmt.executeQuery();
 
-		System.out.println("Executing SQL Query -> " + sql);
+//		System.out.println("Executing SQL Query -> " + sql);
 		
 		while (rs.next()) {
 			film = new Film();
@@ -69,7 +72,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	public Actor findActorById(int actorId) throws SQLException {
 		
 		Actor actor = null;
-//		System.out.println("Find actor by ID started...");
 
 		Connection conn = DriverManager.getConnection(URL, user, pass);
 
@@ -78,7 +80,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		stmt.setInt(1, actorId);
 		ResultSet rs = stmt.executeQuery();
 
-		System.out.println("Executing SQL Query -> " + sql);
+//		System.out.println("Executing SQL Query -> " + sql);
 		
 		while (rs.next()) {
 			actor = new Actor(rs.getInt(1), rs.getString(2), rs.getString(3));
@@ -95,7 +97,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	public List<Actor> findActorsByFilmId(int filmId) throws SQLException {
 		
 		List<Actor> actorsByFilmId = new ArrayList<>();
-//		System.out.println("Find film by ID started...");
 
 		Connection conn = DriverManager.getConnection(URL, user, pass);
 
@@ -107,7 +108,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		stmt.setInt(1, filmId);
 		ResultSet rs = stmt.executeQuery();
 
-		System.out.println("Executing SQL Query -> " + sql + "\n");
+//		System.out.println("Executing SQL Query -> " + sql + "\n");
 		while (rs.next()) {
 			Actor actor = new Actor(rs.getInt(1), rs.getString(2), rs.getString(3));
 			actorsByFilmId.add(actor);
@@ -135,7 +136,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		stmt.setString(1, "%" + keyword + "%");
 		ResultSet rs = stmt.executeQuery();
 
-		System.out.println("Executing SQL Query -> " + sql + "\n");
+//		System.out.println("Executing SQL Query -> " + sql + "\n");
 		while (rs.next()) {
 			filmsByKeyword.add(findFilmById(rs.getInt(1)));
 		}
@@ -162,7 +163,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		stmt.setInt(1, filmId);
 		ResultSet rs = stmt.executeQuery();
 
-		System.out.println("Executing SQL Query -> " + sql + "\n");
+//		System.out.println("Executing SQL Query -> " + sql + "\n");
 		while (rs.next()) {
 			filmLanguage = rs.getString(1);
 		}
